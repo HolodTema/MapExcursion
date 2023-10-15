@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="text_on_secondary">
+        <item name="android:textColor">?attr/colorTextOnSecondary</item>
+    </style>
+    <style name="text_on_primary">
+        <item name="android:textColor">?attr/colorTextOnPrimary</item>
+    </style>
+
+
+
+
+    <style name="text_on_secondary.h1" parent="text_on_secondary">
+        <item name="android:textSize">34sp</item>
+    </style>
+    <style name="text_on_secondary.h2" parent="text_on_secondary">
+        <item name="android:textSize">32sp</item>
+    </style>
+    <style name="text_on_secondary.h3" parent="text_on_secondary">
+        <item name="android:textSize">30sp</item>
+    </style>
+    <style name="text_on_secondary.h4" parent="text_on_secondary">
+        <item name="android:textSize">28sp</item>
+    </style>
+    <style name="text_on_secondary.h5" parent="text_on_secondary">
+        <item name="android:textSize">26sp</item>
+    </style>
+    <style name="text_on_secondary.h6" parent="text_on_secondary">
+        <item name="android:textSize">24sp</item>
+    </style>
+    <style name="text_on_secondary.h7" parent="text_on_secondary">
+        <item name="android:textSize">22sp</item>
+    </style>
+    <style name="text_on_secondary.h8" parent="text_on_secondary">
+        <item name="android:textSize">20sp</item>
+    </style>
+    <style name="text_on_secondary.h9" parent="text_on_secondary">
+        <item name="android:textSize">18sp</item>
+    </style>
+
+
+
+
+
+    <style name="text_on_primary.h1" parent="text_on_primary">
+        <item name="android:textSize">34sp</item>
+    </style>
+    <style name="text_on_primary.h2" parent="text_on_primary">
+        <item name="android:textSize">32sp</item>
+    </style>
+    <style name="text_on_primary.h3" parent="text_on_primary">
+        <item name="android:textSize">30sp</item>
+    </style>
+    <style name="text_on_primary.h4" parent="text_on_primary">
+        <item name="android:textSize">28sp</item>
+    </style>
+    <style name="text_on_primary.h5" parent="text_on_primary">
+        <item name="android:textSize">26sp</item>
+    </style>
+    <style name="text_on_primary.h6" parent="text_on_primary">
+        <item name="android:textSize">24sp</item>
+    </style>
+    <style name="text_on_primary.h7" parent="text_on_primary">
+        <item name="android:textSize">22sp</item>
+    </style>
+    <style name="text_on_primary.h8" parent="text_on_primary">
+        <item name="android:textSize">20sp</item>
+    </style>
+    <style name="text_on_primary.h9" parent="text_on_primary">
+        <item name="android:textSize">18sp</item>
+    </style>
+</resources>
