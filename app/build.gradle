@@ -27,15 +27,20 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
 }
 
+apply plugin: "kotlin-kapt"
 dependencies {
+    //moshi
+    implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")
+
     //osmdroid
     implementation 'org.osmdroid:osmdroid-android:6.1.17'
 

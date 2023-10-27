@@ -4,7 +4,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="red">#F44336</color>
 
-    <color name="secondary_light"></color>
+    <color name="secondary_light">#E9E9E9</color>
     <color name="secondary_variant_light"></color>
     <color name="primary_light">#FF6600</color>
     <color name="primary_variant_light"></color>

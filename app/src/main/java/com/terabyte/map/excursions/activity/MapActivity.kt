@@ -44,7 +44,6 @@ class MapActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
     }
 
     override fun onStart() {
