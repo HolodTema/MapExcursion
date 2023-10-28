@@ -10,7 +10,9 @@
       "image_ids": [
         2,
         3
-      ]
+      ],
+      "lat": 52.2844990,
+      "lon": 104.2871663
     },
     {
       "id": 1,
@@ -19,7 +21,9 @@
       "image_ids": [
         4,
         5
-      ]
+      ],
+      "lat": 52.2504866,
+      "lon":  104.2598421
     },
     {
       "id": 1,
@@ -27,7 +31,9 @@
       "caption": "This ship had been transporting train parts in Baikal lake till the train route was built.",
       "image_ids": [
         6
-      ]
+      ],
+      "lat": 52.2498817,
+      "lon": 104.3436526
     }
   ]
 }

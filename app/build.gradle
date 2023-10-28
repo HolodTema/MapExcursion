@@ -37,6 +37,9 @@ android {
 
 apply plugin: "kotlin-kapt"
 dependencies {
+    //to work with viewModel in fragments
+    implementation "androidx.fragment:fragment-ktx:1.6.1"
+
     //moshi
     implementation("com.squareup.moshi:moshi-kotlin:1.14.0")
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.14.0")

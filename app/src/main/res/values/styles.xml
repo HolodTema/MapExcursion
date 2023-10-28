@@ -37,6 +37,9 @@
     <style name="text_on_secondary.h9" parent="text_on_secondary">
         <item name="android:textSize">18sp</item>
     </style>
+    <style name="text_on_secondary.h10" parent="text_on_secondary">
+        <item name="android:textSize">16sp</item>
+    </style>
 
 
 

@@ -11,5 +11,12 @@
         android:layout_height="match_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:id="@+id/recycler_maps"/>
+    <TextView
+        android:id="@+id/text_label_no_maps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/no_maps"
+        style="@style/text_on_secondary.h9"
+        android:layout_gravity="center"/>
 
 </FrameLayout>

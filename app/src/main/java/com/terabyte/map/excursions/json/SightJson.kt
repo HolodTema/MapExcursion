@@ -9,5 +9,7 @@ data class SightJson(
     @Json(name = "id") val id: Int,
     @Json(name = "title") val title: String,
     @Json(name = "caption") val caption: String,
-    @Json(name = "image_ids") val imageIds: List<Int>
+    @Json(name = "image_ids") val imageIds: List<Int>,
+    @Json(name = "lat") val lat: Double,
+    @Json(name = "lon") val lon: Double
 ): Serializable

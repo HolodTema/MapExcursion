@@ -5,11 +5,14 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Canvas
+import android.graphics.Rect
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.preference.PreferenceManager
 import android.provider.Settings
 import android.util.Log
@@ -17,18 +20,31 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.scaleMatrix
 import androidx.lifecycle.MutableLiveData
+import com.terabyte.map.excursions.INTENT_KEY_MAP_JSON
+import com.terabyte.map.excursions.INTENT_KEY_MAP_START_LAT
+import com.terabyte.map.excursions.INTENT_KEY_MAP_START_LON
+import com.terabyte.map.excursions.INTENT_KEY_MAP_START_ZOOM
+import com.terabyte.map.excursions.INTENT_KEY_SIGHT_JSON
 import com.terabyte.map.excursions.LOG_TAG_DEBUG
 import com.terabyte.map.excursions.MAP_DEFAULT_ZOOM
 import com.terabyte.map.excursions.MAP_START_POINT_LAT
 import com.terabyte.map.excursions.MAP_START_POINT_LON
 import com.terabyte.map.excursions.R
 import com.terabyte.map.excursions.databinding.ActivityMapBinding
+import com.terabyte.map.excursions.json.MapJson
 import com.terabyte.map.excursions.ui.dialog.MapPermissionsBottomSheetDialog
+import com.terabyte.map.excursions.ui.map.SightMarker
 import org.osmdroid.config.Configuration.getInstance
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
+import org.osmdroid.views.MapView
+import org.osmdroid.views.Projection
 import org.osmdroid.views.overlay.Marker
+import org.osmdroid.views.overlay.compass.CompassOverlay
+import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider
+import kotlin.reflect.jvm.internal.impl.builtins.StandardNames.FqNames.map
 
 
 class MapActivity : AppCompatActivity() {
@@ -40,10 +56,26 @@ class MapActivity : AppCompatActivity() {
 
     private var locationMarker: Marker? = null
 
+    private lateinit var map: MapJson
+
+    private var startZoom: Double? = null
+    private var startLat: Double? = null
+    private var startLon: Double? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        if(savedInstanceState==null) {
+            map = intent.extras!!.getSerializable(INTENT_KEY_MAP_JSON) as MapJson
+            if(intent.extras!!.containsKey(INTENT_KEY_MAP_START_ZOOM)) startZoom = intent.extras!!.getDouble(INTENT_KEY_MAP_START_ZOOM)
+            if(intent.extras!!.containsKey(INTENT_KEY_MAP_START_LAT)) startLat = intent.extras!!.getDouble(INTENT_KEY_MAP_START_LAT)
+            if(intent.extras!!.containsKey(INTENT_KEY_MAP_START_LON)) startLon = intent.extras!!.getDouble(INTENT_KEY_MAP_START_LON)
+        }
+        else {
+            map = savedInstanceState.getSerializable(INTENT_KEY_MAP_JSON) as MapJson
+        }
     }
 
     override fun onStart() {
@@ -90,6 +122,11 @@ class MapActivity : AppCompatActivity() {
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle, outPersistentState: PersistableBundle) {
+        outState.putSerializable(INTENT_KEY_MAP_JSON, map)
+        super.onSaveInstanceState(outState, outPersistentState)
+    }
+
     private fun checkPermissions() {
         var allPermissionsGranted = true
         for (permission in PERMISSIONS_TO_CHECK) {
@@ -117,13 +154,51 @@ class MapActivity : AppCompatActivity() {
         with(binding.map) {
             setTileSource(TileSourceFactory.MAPNIK)
             setMultiTouchControls(true)
-            controller.setZoom(MAP_DEFAULT_ZOOM)
+            controller.setZoom(startZoom ?: MAP_DEFAULT_ZOOM)
         }
 
-        val startPoint = GeoPoint(MAP_START_POINT_LAT, MAP_START_POINT_LON)
+        val startPoint = GeoPoint(startLat ?: MAP_START_POINT_LAT, startLon ?: MAP_START_POINT_LON)
         binding.map.controller.setCenter(startPoint)
 
         configureLocation()
+        configureCompass()
+        configureSights()
+    }
+
+    private fun configureSights() {
+        for(sight in map.sights) {
+            val geoPoint = GeoPoint(sight.lat, sight.lon)
+            val marker = SightMarker(this, binding.map, sight).apply {
+                position = geoPoint
+                setOnMarkerClickListener { _, _ ->
+                    startSightInfoActivity(this)
+                    true
+                }
+            }
+            binding.map.overlays.add(marker)
+        }
+        binding.map.invalidate()
+    }
+
+    private fun startSightInfoActivity(sightMarker: SightMarker) {
+        val intent = Intent(this, SightInfoActivity::class.java)
+        intent.putExtra(INTENT_KEY_MAP_JSON, map)
+        intent.putExtra(INTENT_KEY_SIGHT_JSON, sightMarker.sight)
+        intent.putExtra(INTENT_KEY_MAP_START_ZOOM, binding.map.zoomLevelDouble)
+        intent.putExtra(INTENT_KEY_MAP_START_LAT, binding.map.mapCenter.latitude)
+        intent.putExtra(INTENT_KEY_MAP_START_LON, binding.map.mapCenter.longitude)
+        startActivity(intent)
+    }
+
+    private fun configureCompass() {
+        val compassOverlay = object: CompassOverlay(this, InternalCompassOrientationProvider(this), binding.map) {
+            override fun drawCompass(canvas: Canvas?, bearing: Float, screenRect: Rect?) {
+                screenRect?.intersects(binding.map.right-308, screenRect.top, binding.map.right-8, screenRect.bottom)
+                super.drawCompass(canvas, bearing, screenRect)
+            }
+        }
+        compassOverlay.enableCompass()
+        binding.map.overlays.add(compassOverlay)
     }
 
     @SuppressLint("MissingPermission")

@@ -11,9 +11,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import java.io.File
-import java.io.FileInputStream
-import java.io.IOException
 import java.io.InputStream
 import java.util.stream.Stream
 import kotlin.streams.toList
@@ -74,68 +71,39 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
                 val mapJson = MoshiHelper.getMapAdapter().fromJson(jsonText)
                 if (mapJson != null) result.add(mapJson)
             }
-            return result
+            return if(result.isEmpty()) null
+            else result
         }
         catch (e: java.lang.Exception) {
             return null
         }
-
-
-
-//        val folderHistory = File("file:///android_asset_/maps/history")
-//        try {
-//            val result = arrayListOf<MapJson>()
-//            var jsonText: String? = null
-//            var fis: FileInputStream? = null
-//
-//            for (fileMapHistory in folderHistory.listFiles()!!) {
-//                jsonText = ""
-//                fis = FileInputStream(fileMapHistory)
-//
-//                var i = 0
-//                while (i != -1) {
-//                    i = fis.read()
-//                    jsonText += i.toChar()
-//                }
-//
-//                val mapJson = MoshiHelper.getMapAdapter().fromJson(jsonText)
-//                if (mapJson != null) result.add(mapJson)
-//            }
-//            return result
-//        } catch (e: NullPointerException) {
-//            return null
-//        }
     }
 
     private fun loadNatureMaps(): List<MapJson>? {
-        val folderNature = File("file:///android_asset_/maps/nature")
+        val result = arrayListOf<MapJson>()
+        var jsonText: String? = null
+        var inputStream: InputStream? = null
         try {
-            val result = arrayListOf<MapJson>()
-            var jsonText: String? = null
-            var fis: FileInputStream? = null
-
-            for (fileMapNature in folderNature.listFiles()!!) {
+            for (fileName in application.assets.list("maps/nature")!!.iterator()) {
                 jsonText = ""
-                fis = FileInputStream(fileMapNature)
+                inputStream = application.assets.open("maps/nature/$fileName")
 
-                var i = 0
+                var i = inputStream.read()
                 while (i != -1) {
-                    i = fis.read()
                     jsonText += i.toChar()
+                    i = inputStream.read()
                 }
 
                 val mapJson = MoshiHelper.getMapAdapter().fromJson(jsonText)
                 if (mapJson != null) result.add(mapJson)
             }
-            return result
-        } catch (e: NullPointerException) {
+            return if(result.isEmpty()) null
+            else result
+        }
+        catch (e: java.lang.Exception) {
             return null
         }
     }
-
-//    private fun inputStreamToFile(): File {
-//
-//    }
 
     class Factory(private val application: Application): ViewModelProvider.AndroidViewModelFactory() {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
