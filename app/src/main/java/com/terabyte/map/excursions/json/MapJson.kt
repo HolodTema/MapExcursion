@@ -9,5 +9,7 @@ data class MapJson(
     @Json(name = "name") val name: String,
     @Json(name = "caption") val caption: String,
     @Json(name = "image_id") val imageId: Int,
+    @Json(name = "lat_start") val latStart: Double,
+    @Json(name = "lon_start") val lonStart: Double,
     @Json(name = "sights") val sights: List<SightJson>
     ): Serializable

@@ -14,6 +14,7 @@ class ViewPagerSightImagesAdapter(
     override fun getItemCount() = imageIds.size
 
     override fun createFragment(position: Int): Fragment {
-        val fragment = SightImageFragment.create()
+        val fragment = SightImageFragment.create(imageIds[position])
+        return fragment
     }
 }

@@ -72,4 +72,7 @@
     <style name="text_on_primary.h9" parent="text_on_primary">
         <item name="android:textSize">18sp</item>
     </style>
+    <style name="text_on_primary.h10" parent="text_on_primary">
+        <item name="android:textSize">16sp</item>
+    </style>
 </resources>

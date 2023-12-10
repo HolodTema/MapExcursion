@@ -7,6 +7,7 @@ import java.io.Serializable
 @JsonClass(generateAdapter = true)
 data class SightJson(
     @Json(name = "id") val id: Int,
+    @Json(name = "type") val type: Int,
     @Json(name = "title") val title: String,
     @Json(name = "caption") val caption: String,
     @Json(name = "image_ids") val imageIds: List<Int>,

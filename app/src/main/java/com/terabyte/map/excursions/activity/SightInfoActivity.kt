@@ -5,6 +5,8 @@ import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.terabyte.map.excursions.INTENT_KEY_MAP_JSON
 import com.terabyte.map.excursions.INTENT_KEY_MAP_START_LAT
 import com.terabyte.map.excursions.INTENT_KEY_MAP_START_LON
@@ -13,6 +15,7 @@ import com.terabyte.map.excursions.INTENT_KEY_SIGHT_JSON
 import com.terabyte.map.excursions.databinding.ActivitySightInfoBinding
 import com.terabyte.map.excursions.json.MapJson
 import com.terabyte.map.excursions.json.SightJson
+import com.terabyte.map.excursions.ui.adapter.ViewPagerSightImagesAdapter
 import com.terabyte.map.excursions.viewmodel.SightInfoViewModel
 
 class SightInfoActivity : AppCompatActivity() {
@@ -35,11 +38,13 @@ class SightInfoActivity : AppCompatActivity() {
         }
 
         configureOnBackPressed()
+        configureTabLayoutViewPager()
+
         binding.buttonBack.setOnClickListener {
             startMapActivity()
         }
-
-        binding.tabSightImages.setupWithViewPager(binding.viewPagerSightImages, true)
+        binding.textSightName.text = viewModel.sight.title
+        binding.textSightCaption.text = viewModel.sight.caption
     }
 
     private fun configureOnBackPressed() {
@@ -48,6 +53,14 @@ class SightInfoActivity : AppCompatActivity() {
                 startMapActivity()
             }
         })
+    }
+
+    private fun configureTabLayoutViewPager() {
+        val adapter = ViewPagerSightImagesAdapter(this, viewModel.sight.imageIds)
+        binding.viewPagerSightImages.adapter = adapter
+        TabLayoutMediator(binding.tabSightImages, binding.viewPagerSightImages) { tab, position ->
+
+        }.attach()
     }
 
     private fun startMapActivity() {

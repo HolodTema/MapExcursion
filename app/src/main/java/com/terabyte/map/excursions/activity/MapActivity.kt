@@ -15,7 +15,9 @@ import android.os.Bundle
 import android.os.PersistableBundle
 import android.preference.PreferenceManager
 import android.provider.Settings
+import android.util.DisplayMetrics
 import android.util.Log
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.app.ActivityCompat
@@ -25,26 +27,22 @@ import androidx.lifecycle.MutableLiveData
 import com.terabyte.map.excursions.INTENT_KEY_MAP_JSON
 import com.terabyte.map.excursions.INTENT_KEY_MAP_START_LAT
 import com.terabyte.map.excursions.INTENT_KEY_MAP_START_LON
+import com.terabyte.map.excursions.INTENT_KEY_MAP_START_LON
 import com.terabyte.map.excursions.INTENT_KEY_MAP_START_ZOOM
 import com.terabyte.map.excursions.INTENT_KEY_SIGHT_JSON
 import com.terabyte.map.excursions.LOG_TAG_DEBUG
 import com.terabyte.map.excursions.MAP_DEFAULT_ZOOM
-import com.terabyte.map.excursions.MAP_START_POINT_LAT
-import com.terabyte.map.excursions.MAP_START_POINT_LON
-import com.terabyte.map.excursions.R
 import com.terabyte.map.excursions.databinding.ActivityMapBinding
 import com.terabyte.map.excursions.json.MapJson
 import com.terabyte.map.excursions.ui.dialog.MapPermissionsBottomSheetDialog
+import com.terabyte.map.excursions.ui.map.LocationMarker
 import com.terabyte.map.excursions.ui.map.SightMarker
+import com.terabyte.map.excursions.util.IconResizer
 import org.osmdroid.config.Configuration.getInstance
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
-import org.osmdroid.views.MapView
-import org.osmdroid.views.Projection
-import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.compass.CompassOverlay
 import org.osmdroid.views.overlay.compass.InternalCompassOrientationProvider
-import kotlin.reflect.jvm.internal.impl.builtins.StandardNames.FqNames.map
 
 
 class MapActivity : AppCompatActivity() {
@@ -54,7 +52,7 @@ class MapActivity : AppCompatActivity() {
     private val liveDataLocationByGps = MutableLiveData<Location>()
     private val liveDataLocationByNetwork = MutableLiveData<Location>()
 
-    private var locationMarker: Marker? = null
+    private var locationMarker: LocationMarker? = null
 
     private lateinit var map: MapJson
 
@@ -66,6 +64,8 @@ class MapActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        configureOnBackPressed()
 
         if(savedInstanceState==null) {
             map = intent.extras!!.getSerializable(INTENT_KEY_MAP_JSON) as MapJson
@@ -127,6 +127,14 @@ class MapActivity : AppCompatActivity() {
         super.onSaveInstanceState(outState, outPersistentState)
     }
 
+    private fun configureOnBackPressed() {
+        onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                startActivity(Intent(this@MapActivity, MainActivity::class.java))
+            }
+        })
+    }
+
     private fun checkPermissions() {
         var allPermissionsGranted = true
         for (permission in PERMISSIONS_TO_CHECK) {
@@ -157,7 +165,7 @@ class MapActivity : AppCompatActivity() {
             controller.setZoom(startZoom ?: MAP_DEFAULT_ZOOM)
         }
 
-        val startPoint = GeoPoint(startLat ?: MAP_START_POINT_LAT, startLon ?: MAP_START_POINT_LON)
+        val startPoint = GeoPoint(startLat ?: map.latStart, startLon ?: map.lonStart)
         binding.map.controller.setCenter(startPoint)
 
         configureLocation()
@@ -168,7 +176,7 @@ class MapActivity : AppCompatActivity() {
     private fun configureSights() {
         for(sight in map.sights) {
             val geoPoint = GeoPoint(sight.lat, sight.lon)
-            val marker = SightMarker(this, binding.map, sight).apply {
+            val marker = SightMarker(this, binding.map, sight, IconResizer.getInstance(windowManager).getSightMarkerHeight()).apply {
                 position = geoPoint
                 setOnMarkerClickListener { _, _ ->
                     startSightInfoActivity(this)
@@ -211,12 +219,8 @@ class MapActivity : AppCompatActivity() {
                 binding.map.overlays.remove(locationMarker)
             }
             val pointMarker = GeoPoint(location)
-            locationMarker = Marker(binding.map).apply {
-                icon = AppCompatResources.getDrawable(this@MapActivity, R.drawable.location_marker)
-                setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+            locationMarker = LocationMarker(this, binding.map, IconResizer.getInstance(windowManager).getLocationMarkerHeight()).apply {
                 position = pointMarker
-                isDraggable = false
-                infoWindow = null
 
             }
             binding.map.overlays.add(locationMarker)
@@ -228,12 +232,8 @@ class MapActivity : AppCompatActivity() {
                 binding.map.overlays.remove(locationMarker)
             }
             val pointMarker = GeoPoint(location)
-            locationMarker = Marker(binding.map).apply {
-                icon = AppCompatResources.getDrawable(this@MapActivity, R.drawable.location_marker)
-                setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+            locationMarker = LocationMarker(this, binding.map, IconResizer.getInstance(windowManager).getLocationMarkerHeight()).apply {
                 position = pointMarker
-                isDraggable = false
-                infoWindow = null
 
             }
             binding.map.overlays.add(locationMarker)

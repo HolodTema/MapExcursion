@@ -9,4 +9,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="no_maps">There are no maps yet...</string>
+    <string name="hello">Hello!</string>
+    <string name="welcome_description">Welcome to Map Excursions - the app where you can find any sight of your city or countryside.\n\nLet\'s talk about how to use it!</string>
+    <string name="text_continue">Continue</string>
+    <string name="skip_instruction">Skip</string>
+    <string name="text_intro1">You can choose a map with the sights you are interested in. There are two map types: nature and history maps.\n\nYou can see these icons on the map:</string>
+    <string name="text_intro2">Click on a sight marker to get some more information about the place: its history, photos etc.</string>
+    <string name="let_is_go">Let\'s go!</string>
 </resources>

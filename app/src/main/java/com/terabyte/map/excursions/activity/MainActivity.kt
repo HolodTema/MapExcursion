@@ -1,6 +1,8 @@
 package com.terabyte.map.excursions.activity
 
+import android.content.Intent
 import android.os.Bundle
+import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.tabs.TabLayoutMediator
@@ -17,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_download)
         viewModel = ViewModelProvider(this)[MainViewModel::class.java]
+        configureOnBackPressed()
 
         viewModel.liveDataMapsAll.observe(this) {
             binding = ActivityMainBinding.inflate(layoutInflater)
@@ -24,6 +27,13 @@ class MainActivity : AppCompatActivity() {
 
             configureTabLayoutViewPager()
         }
+    }
+
+    private fun configureOnBackPressed() {
+        onBackPressedDispatcher.addCallback(this, object: OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+            }
+        })
     }
 
     private fun configureTabLayoutViewPager() {
