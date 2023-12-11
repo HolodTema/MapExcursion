@@ -50,6 +50,25 @@ class IntroViewModel(application: Application) : AndroidViewModel(application) {
 
 
     private fun loadIntroImages(): List<Pair<String, Drawable>>? {
+        fun analyseIntroImageFilenames(): Map<Int, String> {
+            val result = mutableMapOf<Int, String>()
+            val introImageFilenames = application.assets.list("intro_images/")
+            for(introImageFileName in introImageFilenames!!.iterator()) {
+                val nameWithoutFormat = introImageFileName.split(".")[0]
+                var id = ""
+                for (i in nameWithoutFormat.length-1 downTo 0) {
+                    if (nameWithoutFormat[i] in "0123456789") {
+                        id+=nameWithoutFormat[i]
+                    }
+                    else {
+                        break
+                    }
+                }
+                if(id.isNotEmpty()) result[id.toInt()] = introImageFileName
+            }
+            return result
+        }
+
         fun getThreeDifferentRandomValues(intRange: IntRange): List<Int> {
             val result = arrayListOf<Int>()
             while(result.size<3) {
@@ -77,12 +96,13 @@ class IntroViewModel(application: Application) : AndroidViewModel(application) {
 
             if (introImages.isNullOrEmpty()) return null
             else {
+                val analysedFilenamesMap = analyseIntroImageFilenames()
                 val result = arrayListOf<Pair<String, Drawable>>()
                 var inputStreamImageFiles: InputStream?
                 var drawable: Drawable?
                 val randomImageIndexes = getThreeDifferentRandomValues(introImages.indices)
                 for(randomImageIndex in randomImageIndexes) {
-                    inputStreamImageFiles = application.assets.open("intro_images/intro_image${introImages[randomImageIndex].id}")
+                    inputStreamImageFiles = application.assets.open("intro_images/${analysedFilenamesMap[introImages[randomImageIndex].id]}")
                     drawable = Drawable.createFromStream(inputStreamImageFiles, null)
                     if(drawable==null) return null
                     result.add(introImages[randomImageIndex].caption to drawable)

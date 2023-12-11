@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.tabs.TabLayoutMediator
+import com.terabyte.map.excursions.activity.IntroActivity
 import com.terabyte.map.excursions.activity.MainActivity
 import com.terabyte.map.excursions.databinding.FragmentIntro0Binding
 import com.terabyte.map.excursions.databinding.FragmentIntro1Binding
@@ -23,7 +24,6 @@ class IntroFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
         return when(viewModel.fragmentNumber) {
             0 -> {
                 val binding = FragmentIntro0Binding.inflate(layoutInflater, container, false)
@@ -51,6 +51,12 @@ class IntroFragment : Fragment() {
                 return binding.root
             }
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        (activity as IntroActivity).setCurrentBackground()
+
     }
 
 }

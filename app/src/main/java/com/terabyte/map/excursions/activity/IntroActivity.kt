@@ -25,13 +25,13 @@ class IntroActivity : AppCompatActivity() {
         }
     }
 
-    private fun onIntroImagesGot() {
-        fun setCurrentBackground() {
-            val currentIntroImagePair = viewModel.getCurrentIntroImage()
-            binding.textIntroImageCaption.text = currentIntroImagePair.first
-            binding.root.background = currentIntroImagePair.second
-        }
+    fun setCurrentBackground() {
+        val currentIntroImagePair = viewModel.getCurrentIntroImage()
+        binding.textIntroImageCaption.text = currentIntroImagePair.first
+        binding.root.background = currentIntroImagePair.second
+    }
 
+    private fun onIntroImagesGot() {
         binding = ActivityIntroBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setCurrentBackground()
@@ -41,7 +41,6 @@ class IntroActivity : AppCompatActivity() {
 
         binding.buttonContinue.setOnClickListener {
             viewModel.fragmentNumber++
-            setCurrentBackground()
             if(viewModel.fragmentNumber==2) {
                 binding.buttonContinue.isVisible = false
                 binding.buttonSkip.isVisible = false

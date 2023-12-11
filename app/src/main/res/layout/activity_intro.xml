@@ -16,6 +16,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:paddingHorizontal="4dp"
         android:textColor="?attr/colorPrimary"
         android:textAllCaps="false"
         android:background="@drawable/button_background"
@@ -29,6 +30,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <androidx.appcompat.widget.AppCompatButton
+        android:paddingHorizontal="4dp"
         android:textColor="?attr/colorPrimary"
         android:textAllCaps="false"
         android:background="@drawable/button_background"
@@ -53,5 +55,7 @@
         android:shadowColor="@color/black"
         android:shadowDx="2"
         android:shadowDy="2"
-        android:shadowRadius="2"/>
+        android:shadowRadius="2"
+        android:fontFamily="@font/neosans_pro_medium"
+        android:elevation="10dp"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
