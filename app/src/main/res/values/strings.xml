@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Map Excursions</string>
+    <string name="map_permissions_in_dialog_header">Application cannot work without these permissions!</string>
+    <string name="map_permissions_in_settings_header">Application cannot work without these permissions!</string>
+    <string name="got_it">Got it</string>
+    <string name="go_to_settings">Go to settings</string>
+    <string name="map_permissions_in_settings_description">To continue, you need to go to the settings and enable FINE and COARSE GPS location.</string>
+    <string name="map_permissions_in_dialog_description">You are supposed to allow using fine GPS location. We use your location to show it on the map.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="no_maps">There are no maps yet...</string>
+    <string name="hello">Hello!</string>
+    <string name="welcome_description">Welcome to Map Excursions - the app where you can find any sight of your city or countryside.\n\nLet\'s talk about how to use it!</string>
+    <string name="text_continue">Continue</string>
+    <string name="skip_instruction">Skip</string>
+    <string name="text_intro1">You can choose a map with the sights you are interested in. There are two map types: nature and history maps.\n\nYou can see these icons on the map:</string>
+    <string name="text_intro2">Click on a sight marker to get some more information about the place: its history, photos etc.</string>
+    <string name="let_is_go">Let\'s go!</string>
+</resources>

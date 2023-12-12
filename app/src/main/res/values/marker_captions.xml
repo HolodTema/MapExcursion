@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="marker_captions">
+        <item>Location marker shows your GPS location.</item>
+        <item>Landscape marker means beautiful city or nature view.</item>
+        <item>This marker means museums, theatres, hotels, churches and such a buildings.</item>
+        <item>Nature marker implies some peaks, lakes, rivers, islands, rocks and other nature objects.</item>
+        <item>"From-history" marker is shown in the places where something important was happening in the past.</item>
+        <item>Building marker implies some important, interesting city buildings kinda factories, banks, hotels, electric stations etc.</item>
+        <item>This marker means parks, fountains and squares.</item>
+        <item>"Other" marker includes the objects which haven\'t been in previous categories.</item>
+    </string-array>
+</resources>
