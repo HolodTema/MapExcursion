@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <string-array name="strings_tabs_maps_names">
-        <item>Все</item>
-        <item>История</item>
-        <item>Природа</item>
-    </string-array>
-</resources>
