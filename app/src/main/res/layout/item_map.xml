@@ -19,7 +19,8 @@
             android:id="@+id/image_map"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            test:src="@drawable/sight_image_test"/>
     </androidx.cardview.widget.CardView>
 
     <TextView

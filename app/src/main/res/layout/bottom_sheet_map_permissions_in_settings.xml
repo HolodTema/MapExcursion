@@ -22,6 +22,10 @@
         android:layout_marginTop="8dp"
         style="@style/text_on_secondary.h9"/>
     <androidx.appcompat.widget.AppCompatButton
+        android:paddingHorizontal="4dp"
+        android:textColor="?attr/colorPrimary"
+        android:textAllCaps="false"
+        android:background="@drawable/button_background"
         android:id="@+id/button_got_it"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
